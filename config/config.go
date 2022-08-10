@@ -32,7 +32,7 @@ func InitConfig() error {
 func loadEmailConfig(file *ini.File) { //加载email服务配置
 	EmailHost = file.Section("email").Key("Host").MustString("")
 	EmailUsername = file.Section("email").Key("Username").MustString("")
-	EmailPort = file.Section("email").Key("Port").MustInt(25)
+	EmailPort = file.Section("email").Key("Port").MustInt(465)
 	EmailPass = file.Section("email").Key("Pass").MustString("")
 	NotifyEmail = file.Section("email").Key("NotifyEmail").MustString("")
 }

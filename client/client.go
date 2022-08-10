@@ -34,15 +34,20 @@ func NewHttpClient() *http.Client {
 
 func Task() {
 	HTTPClient := NewHttpClient()
-	req := service.SignRequest()
-	rsp, err := HTTPClient.Do(req)
+	reqSign := service.SignRequest()
+	rspSign, err := HTTPClient.Do(reqSign) //发送签到请求
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	respBody, err := ioutil.ReadAll(rsp.Body)
-	email.SendEmail(config.NotifyEmail, "米游社签到成功通知", string(respBody))
-	log.Print(string(respBody))
+	reqSignInfo := service.SignInfoRequest() //发送签到信息请求
+	rspSignInfo, err := HTTPClient.Do(reqSignInfo)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	respBodySign, err := ioutil.ReadAll(rspSign.Body)
+	respBodySignInfo, err := ioutil.ReadAll(rspSignInfo.Body)
+	email.SendEmail(config.NotifyEmail, "米游社签到成功通知", string(respBodySign)+"\n"+string(respBodySignInfo))
+	log.Print(string(respBodySign))
 }
 
 func runTask(c *cron.Cron, timeRule string) {
